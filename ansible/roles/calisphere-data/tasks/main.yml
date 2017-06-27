@@ -1,0 +1,19 @@
+---
+- name: include vaulted passwords from vaulted.yml
+  include_vars: vaulted.yml
+- name: upgrade all packages
+  yum:
+    name: '*'
+    state: latest
+- name: install needed packages
+  become: yes
+  yum: "pkg={{ item }} state=latest"
+  with_items:
+    - git
+    - python27-pip
+- name: create the environment variable file
+  template:
+    src: env.local.j2
+    dst: ~/env.local
+- name: clone public interface
+  git:
