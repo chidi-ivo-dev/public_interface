@@ -17,6 +17,7 @@
     - gcc
     - make
     - python27-pip
+    - redis
 - name: create the environment variable file
   template:
     src: env.local.j2
