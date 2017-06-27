@@ -21,7 +21,7 @@
 - name: start and run redis always
   service:
     name: redis
-    status: started
+    state: started
     enabled: yes
 - name: create the environment variable file
   template:
