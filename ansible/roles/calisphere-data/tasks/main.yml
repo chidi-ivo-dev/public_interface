@@ -14,7 +14,7 @@
 - name: create the environment variable file
   template:
     src: env.local.j2
-    dst: ~/env.local
+    dest: ~/env.local
 - name: clone public interface
   git:
     repo: https://github.com/ucldc/public_interface.git
