@@ -32,23 +32,23 @@
   pip:
     requirements: /home/ec2-user/code/public_interface/requirements.txt
 - name: migrate db
-  command: python manage.py migrate --noinput
+  command: . ~/env.local; python manage.py migrate --noinput
   args:
     chdir: "{{ codedir }}"
 - name: load content
-  command: ./load-content.sh
+  command: . ~/env.local; ./load-content.sh
   args:
     chdir: "{{ codedir }}"
 - name: collect static files
-  command: python manage.py collectstatic --noinput
+  command: . ~/env.local; python manage.py collectstatic --noinput
   args:
     chdir: "{{ codedir }}"
 - name: set "site"
-  command: python manage.py loaddata fixtures/sites.json
+  command: . ~/env.local; python manage.py loaddata fixtures/sites.json
   args:
     chdir: "{{ codedir }}"
 - name: make sitemaps
-  command: python manage.py calisphere_refresh_sitemaps
+  command: . ~/env.local; python manage.py calisphere_refresh_sitemaps
   args:
     chdir: "{{ codedir }}"
 
