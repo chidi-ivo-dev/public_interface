@@ -6,6 +6,9 @@
   yum:
     name: '*'
     state: latest
+- name: enable the extended epel repo (for redis)
+  become: yes
+  command: yum-config-manager --enable epel
 - name: install needed packages
   become: yes
   yum: "pkg={{ item }} state=latest"
