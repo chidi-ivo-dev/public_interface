@@ -1,5 +1,7 @@
 ---
 - name: include vaulted passwords from vaulted.yml
+  vars:
+    codedir: /home/ec2-user/code/public_interface
   include_vars: vaulted.yml
 - name: upgrade all packages
   become: yes
@@ -25,9 +27,25 @@
 - name: clone public interface
   git:
     repo: https://github.com/ucldc/public_interface.git
-    dest: ~/code/public_interface
+    dest: "{{ codedir }}"
     update: yes
 - name: install public interface dependencies
   become: yes
   pip:
     requirements: /home/ec2-user/code/public_interface/requirements.txt
+- name: migrate db
+  command: python manage.py migrate --noinput
+    chdir: "{{ codedir }}"
+- name: load content
+  command: ./load-content.sh
+    chdir: "{{ codedir }}"
+- name: collect static files
+  command: python manage.py collectstatic --noinput
+    chdir: "{{ codedir }}"
+- name: set "site"
+  command: python manage.py loaddata fixtures/sites.json
+    chdir: "{{ codedir }}"
+- name: make sitemaps
+  command: python manage.py calisphere_refresh_sitemaps
+    chdir: "{{ codedir }}"
+
