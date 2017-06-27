@@ -1,6 +1,8 @@
 ---
 - hosts: calisphere
   gather_facts: yes
+  vars:
+    codedir: /home/ec2-user/code/public_interface
   roles:
     - { role: mredar.nightly_security_update_yum, tags: security-up }
     - calisphere-data

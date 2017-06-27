@@ -1,6 +1,4 @@
 ---
-- vars:
-    codedir: /home/ec2-user/code/public_interface
 - name: include vaulted passwords from vaulted.yml
   include_vars: vaulted.yml
 - name: upgrade all packages
