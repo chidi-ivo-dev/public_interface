@@ -2,6 +2,7 @@
 - name: include vaulted passwords from vaulted.yml
   include_vars: vaulted.yml
 - name: upgrade all packages
+  become: yes
   yum:
     name: '*'
     state: latest
@@ -23,5 +24,6 @@
     dest: ~/code/public_interface
     update: yes
 - name: install public interface dependencies
+  become: yes
   pip:
-    requirements: ~/code/public_interface/requirements.txt
+    requirements: /home/ec2-user/code/public_interface/requirements.txt

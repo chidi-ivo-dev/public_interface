@@ -1,7 +1,6 @@
 ---
 - hosts: calisphere
-  become: yes
   gather_facts: yes
   roles:
-    #- { role: mredar.nightly_security_update_yum, tags: security-up }
+    - { role: mredar.nightly_security_update_yum, tags: security-up }
     - calisphere-data
