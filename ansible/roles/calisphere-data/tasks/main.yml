@@ -18,6 +18,11 @@
     - make
     - python27-pip
     - redis
+- name: start and run redis always
+  service:
+    name: redis
+    status: started
+    enabled: yes
 - name: create the environment variable file
   template:
     src: env.local.j2
@@ -32,23 +37,23 @@
   pip:
     requirements: /home/ec2-user/code/public_interface/requirements.txt
 - name: migrate db
-  command: . ~/env.local; python manage.py migrate --noinput
+  shell: . ~/env.local; python manage.py migrate --noinput
   args:
     chdir: "{{ codedir }}"
 - name: load content
-  command: . ~/env.local; ./load-content.sh
+  shell: . ~/env.local; ./load-content.sh
   args:
     chdir: "{{ codedir }}"
 - name: collect static files
-  command: . ~/env.local; python manage.py collectstatic --noinput
+  shell: . ~/env.local; python manage.py collectstatic --noinput
   args:
     chdir: "{{ codedir }}"
 - name: set "site"
-  command: . ~/env.local; python manage.py loaddata fixtures/sites.json
+  shell: . ~/env.local; python manage.py loaddata fixtures/sites.json
   args:
     chdir: "{{ codedir }}"
 - name: make sitemaps
-  command: . ~/env.local; python manage.py calisphere_refresh_sitemaps
+  shell: . ~/env.local; python manage.py calisphere_refresh_sitemaps
   args:
     chdir: "{{ codedir }}"
 
