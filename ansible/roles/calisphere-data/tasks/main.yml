@@ -10,6 +10,8 @@
   yum: "pkg={{ item }} state=latest"
   with_items:
     - git
+    - gcc
+    - make
     - python27-pip
 - name: create the environment variable file
   template:
