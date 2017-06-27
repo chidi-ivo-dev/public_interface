@@ -1,2 +1,2 @@
 [calisphere]
-calisphere-data ansible_host=10.60.1.143 ansible_user=ec2-user ansible_private_key_file=~/.ssh/ingest-west-2.pem
+calisphere-data ansible_host=10.60.1.156 ansible_user=ec2-user ansible_private_key_file=~/.ssh/ingest-west-2.pem
