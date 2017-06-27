@@ -17,3 +17,9 @@
     dst: ~/env.local
 - name: clone public interface
   git:
+    repo: https://github.com/ucldc/public_interface.git
+    dest: ~
+    update: yes
+- name: install public interface dependencies
+  pip:
+    requirements: ~/public_interface/requirements.txt
