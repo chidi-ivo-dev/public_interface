@@ -19,6 +19,7 @@
     - python27-pip
     - redis
 - name: start and run redis always
+  become: yes
   service:
     name: redis
     state: started
