@@ -45,6 +45,10 @@
   shell: . ~/env.local; ./load-content.sh
   args:
     chdir: "{{ codedir }}"
+- name: make the "dist" dir, needed by collectstatic
+  file:
+    path: "{{ codedir }}/dist"
+    state: directory
 - name: collect static files
   shell: . ~/env.local; python manage.py collectstatic --noinput
   args:
