@@ -33,6 +33,7 @@
     repo: https://github.com/ucldc/public_interface.git
     dest: "{{ codedir }}"
     update: yes
+    force: yes
 - name: install public interface dependencies
   become: yes
   pip:
