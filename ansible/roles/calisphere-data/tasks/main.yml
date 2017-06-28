@@ -39,15 +39,17 @@
   pip:
     requirements: /home/ec2-user/code/public_interface/requirements.txt
 - name: get public ip for machine, need to add to ALLOWED_HOSTS in settings
-  shell: curl http://169.254.169.254/latest/meta-data/public-ipv4
+  uri: 
+    url: http://169.254.169.254/latest/meta-data/public-ipv4
+    return_content: yes
   register: ip_public
 - debug: var=ip_public
 - name: put public IP in ALLOWED_HOSTS
   lineinfile:
-    path: "{{ codedir }}/public_interface/settings.py"
+    dest: "{{ codedir }}/public_interface/settings.py"
     regexp: "ALLOWED_HOSTS = "
     insertafter: yes
-    line: "    '{{ ip_public.stdout }}',"
+    line: "    '{{ ip_public.content }}',"
 - name: migrate db
   shell: . ~/env.local; python manage.py migrate --noinput
   args:
