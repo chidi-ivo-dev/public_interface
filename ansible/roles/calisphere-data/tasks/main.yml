@@ -47,9 +47,10 @@
 - name: put public IP in ALLOWED_HOSTS
   lineinfile:
     dest: "{{ codedir }}/public_interface/settings.py"
-    regexp: "ALLOWED_HOSTS = "
+    regexp: 'ALLOWED_HOSTS = \['
     insertafter: yes
-    line: "    '{{ ip_public.content }}',"
+    line: "ALLOWED_HOSTS = [\n    '{{ ip_public.content }}',"
+    state: present
 - name: migrate db
   shell: . ~/env.local; python manage.py migrate --noinput
   args:
