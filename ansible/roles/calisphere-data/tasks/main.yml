@@ -37,6 +37,16 @@
   become: yes
   pip:
     requirements: /home/ec2-user/code/public_interface/requirements.txt
+- name: get public ip for machine, need to add to ALLOWED_HOSTS in settings
+  shell: curl http://169.254.169.254/latest/meta-data/public-ipv4
+  register: ip_public
+- debug: var=ip_public
+- name: put public IP in ALLOWED_HOSTS
+  lineinfile:
+    path: "{{ codedir }}/public_interface/settings.py"
+    regexp: "ALLOWED_HOSTS = "
+    insertafter: yes
+    line: "    '{{ ip_public.stdout }}',"
 - name: migrate db
   shell: . ~/env.local; python manage.py migrate --noinput
   args:
