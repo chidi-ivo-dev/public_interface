@@ -18,6 +18,7 @@
     - make
     - python27-pip
     - redis
+    - monit
 - name: start and run redis always
   become: yes
   service:
@@ -75,4 +76,11 @@
   shell: . ~/env.local; python manage.py calisphere_refresh_sitemaps
   args:
     chdir: "{{ codedir }}"
+- name:  install gunicorn
+  pip:
+    name: gunicorn
+- name: configure monit
+  file:
+    src: run_gunicorn.monit
+    dest: /etc/monit.d/run_gunicorn.monit
 
