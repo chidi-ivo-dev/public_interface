@@ -17,14 +17,7 @@
     - gcc
     - make
     - python27-pip
-    - redis
     - monit
-- name: start and run redis always
-  become: yes
-  service:
-    name: redis
-    state: started
-    enabled: yes
 - name: create the environment variable file
   template:
     src: env.local.j2
@@ -72,15 +65,40 @@
   shell: . ~/env.local; python manage.py loaddata fixtures/sites.json
   args:
     chdir: "{{ codedir }}"
-- name: make sitemaps
-  shell: . ~/env.local; python manage.py calisphere_refresh_sitemaps
-  args:
-    chdir: "{{ codedir }}"
+# - name: make sitemaps
+#   shell: . ~/env.local; python manage.py calisphere_refresh_sitemaps
+#   args:
+#     chdir: "{{ codedir }}"
 - name:  install gunicorn
+  become: yes
   pip:
     name: gunicorn
-- name: configure monit
+- name: make log dir for gunicorn
+  become: yes
   file:
+    path: /var/log/gunicorn
+    state: directory
+- name: install gunicorn run script
+  copy:
+    src: run_gunicorn.sh
+    dest: /home/ec2-user/run_gunicorn.sh
+    mode: 0755
+- name: configure monit gunicorn process
+  become: yes
+  copy:
     src: run_gunicorn.monit
     dest: /etc/monit.d/run_gunicorn.monit
-
+- name: install the monit conf file
+  become: yes
+  copy:
+    src: monit.conf
+    dest: /etc/monit.conf
+    mode: 0600
+- name: run monit on startup
+  become: yes
+  service:
+    name: monit
+    enabled: yes
+- name: start up monit & validate
+  become: yes
+  shell: monit validate

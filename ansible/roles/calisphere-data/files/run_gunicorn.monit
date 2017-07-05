@@ -1,7 +1,7 @@
 check process gunicorn
-    with pidfile "/var/lib/gunicorn/gunicorn.pid"
-    start program "/bin/bash -c 'cd /home/ec2-user/code/public_interface; . /home/ec2-user/env.local; /usr/local/bin/gunicorn -b 0.0.0.0:80 --error-logfile /var/lib/gunicorn/error.log --access-logfile /var/lib/gunicorn/access.log -pid /var/lib/gunicorn/gunicorn.pid public_interface.wsgi & '" with timeout 10 seconds
-	stop program = "/bin/bash -c 'kill -s SIGTERM `cat /var/lib/gunicorn/gunicorn.pid`'"
+    with pidfile "/var/log/gunicorn/gunicorn.pid"
+    start program /home/ec2-user/run_gunicorn.sh with timeout 10 seconds
+	stop program = "/bin/bash -c 'kill -s SIGTERM `cat /var/log/gunicorn/gunicorn.pid`'"
   if failed
     port 80
     protocol http
